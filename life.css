@@ -1,0 +1,130 @@
+.body {
+  display: grid;
+  grid-template-columns: min-content auto;
+  grid-gap: 24px;
+  font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial,
+    sans-serif;
+}
+
+.menu {
+  width: 500px;
+  margin-left: 16px;
+}
+
+.menu__main {
+  margin: 0 20px;
+}
+
+.menu__title {
+  text-align: center;
+  margin-top: 24px;
+}
+
+h3 {
+  text-align: center;
+  font-weight: 100;
+  margin: 36px 0 8px;
+}
+
+h4 {
+  margin-bottom: 6px;
+}
+
+.menu__row {
+  display: flex;
+  gap: 8px;
+}
+
+.gray-container {
+  padding: 8px;
+  margin: 4px 0;
+  border-radius: 12px;
+  background-color: rgb(231 231 231);
+  flex-grow: 1;
+  text-align: center;
+}
+.gray-container p {
+  margin: 4px 0;
+}
+
+.input {
+  width: 100px;
+  padding: 6px;
+  margin-right: 8px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+}
+
+.button-container {
+  display: flex;
+  gap: 4px;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.btn__apply,
+.button-container > * {
+  padding: 8px;
+  border-radius: 12px;
+  color: white;
+  border: none;
+  flex-grow: 1;
+  font-size: 16px;
+}
+
+:is(.btn__start, .btn__stop, .btn__clear, .btn__apply):disabled {
+  background-color: #c4c4c4;
+  color: lightgrey;
+}
+
+.btn__start {
+  background-color: #7cd500;
+}
+.btn__stop {
+  background-color: #ff5765;
+}
+.btn__clear {
+  background-color: #f1d21f;
+}
+.btn__apply {
+  background-color: #59bfff;
+}
+
+.menu__notes-caption {
+  text-align: center;
+  margin: 24px 0 8px;
+}
+
+.menu__notes-content {
+  font-size: 14px;
+}
+
+.lightgray-container {
+  padding: 12px;
+  border-radius: 12px;
+  background-color: rgb(243, 243, 243);
+}
+
+ul {
+  padding-left: 16px;
+}
+
+li {
+  margin-top: 4px;
+}
+
+canvas {
+  position: absolute;
+}
+#canvas-grid {
+  z-index: 0;
+}
+#canvas-cells {
+  z-index: 1;
+}
+#canvas-container {
+  position: relative;
+  border: 1px solid gray;
+  border-radius: 4px;
+}

@@ -2,8 +2,7 @@
   display: grid;
   grid-template-columns: min-content auto;
   grid-gap: 24px;
-  font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial,
-    sans-serif;
+  font-family: Open sans;
 }
 
 .menu {
@@ -67,6 +66,7 @@ h4 {
 .button-container > * {
   flex-grow: 1;
   color: white;
+  font-family: inherit;
   font-size: 16px;
   border: none;
   border-radius: 12px;

@@ -16,6 +16,7 @@ var minCellSize = 5.0; //Минимальный размер одной клет
 var cellSize = minCellSize; //Размер одной клетки (px)
 
 var storage = []; //Список живых клеток
+var storageOld = []; //Список живых клеток gредыдущего поколения
 var cellMap = []; //Карта живых клеток
 
 //Сдвиги индектов для каждого из 8 соседей
@@ -162,8 +163,10 @@ function runGeneration() {
 
   const time = performance.now();
 
+  if (generation % 2 == 0) storageOld = [...storage];
   createCellMap();
   let nextGenStorage = [];
+
   for (let c of storage) {
     const cellsToAdd = getNeighborsAlive(c, nextGenStorage);
     if (isCellAlive(c)) cellsToAdd.push(c);
@@ -173,6 +176,12 @@ function runGeneration() {
   const endByFreeze =
     storage.length === nextGenStorage.length &&
     storage.every((c) => isIn(nextGenStorage, c));
+  storage = nextGenStorage;
+  const endByLoop =
+    generation % 2 !== 0
+      ? storageOld.length === nextGenStorage.length &&
+        storageOld.every((c) => isIn(nextGenStorage, c))
+      : false;
   storage = nextGenStorage;
   drawCells();
 
@@ -184,7 +193,7 @@ function runGeneration() {
   generation++;
   document.getElementById("generation").innerHTML = generation;
 
-  if (storage.length == 0 || endByFreeze) stopLife();
+  if (storage.length == 0 || endByFreeze || endByLoop) stopLife();
   else timer = setTimeout(runGeneration, 300);
 }
 

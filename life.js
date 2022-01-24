@@ -7,17 +7,16 @@ var ctxCells = canvasCells.getContext("2d");
 var isRunning = false;
 
 var timer;
-var generation = 0;
-var genTime = 0;
-var sumTime = 0;
-var numberOfCells = 50;
-var size;
-var cellSize = 1.0;
+var generation = 0; //Номер поколения
+var genTime = 0; //Время расчёта текущего поколения
+var sumTime = 0; //Суммарное время расчёта всех поколений
+var dimension = 50; //Размерность игрового поля
+var size; //Длина стороны игрового поля (px)
+var minCellSize = 5.0; //Минимальный размер одной клетки (px)
+var cellSize = minCellSize; //Размер одной клетки (px)
 
-//Список живых клеток
-var storage = [];
-//Карта живых клеток
-var cellMap = [];
+var storage = []; //Список живых клеток
+var cellMap = []; //Карта живых клеток
 
 //Сдвиги индектов для каждого из 8 соседей
 const neighborOffset = [
@@ -32,8 +31,8 @@ const neighborOffset = [
 ];
 
 //Вычисление индексов клеток с противоположной стороны границы поля
-boundIndex = (x) =>
-  x - (x >= numberOfCells ? numberOfCells : x < 0 ? -numberOfCells : 0);
+boundIndex = (index) =>
+  index - (index >= dimension ? dimension : index < 0 ? -dimension : 0);
 
 //Задает стандартные размеры игрового поля
 function resetCanvasSize() {
@@ -48,7 +47,7 @@ function resetCanvasSize() {
 }
 
 //Применение новой размерности игрового поля
-function applyNewSize() {
+function applyNewDimension() {
   resetCanvasSize();
   drawGrid();
   drawCells();
@@ -60,19 +59,19 @@ function setupGrid() {
 
   if (isRunning) return;
 
-  numberOfCells = document.getElementById("size").value =
-    5 * Math.round(document.getElementById("size").value / 5);
-  cellSize = size / numberOfCells;
-  if (cellSize < 4.0) {
-    cellSize = 4.0;
+  dimension = document.getElementById("dimension").value =
+    5 * Math.round(document.getElementById("dimension").value / 5);
+  cellSize = size / dimension;
+  if (cellSize < minCellSize) {
+    cellSize = minCellSize;
     canvasContainer.style.width = canvasContainer.style.height =
-      cellSize * numberOfCells + "px";
+      cellSize * dimension + "px";
     size =
       ctxGrid.canvas.width =
       ctxGrid.canvas.height =
       ctxCells.canvas.width =
       ctxCells.canvas.height =
-        cellSize * numberOfCells;
+        cellSize * dimension;
   }
 }
 
@@ -210,15 +209,13 @@ function createCellMap() {
 
 //Удаление живых клеток, которые не вошли в игровое поле
 function cutStorage() {
-  storage = storage.filter(([x, y]) => x < numberOfCells && y < numberOfCells);
+  storage = storage.filter(([x, y]) => x < dimension && y < dimension);
 }
 
 //Обработка нажаний на игровое поле
 canvasCells.onclick = function (event) {
-  let x = event.offsetX;
-  let y = event.offsetY;
-  x = Math.floor(x / cellSize);
-  y = Math.floor(y / cellSize);
+  const x = Math.floor(event.offsetX / cellSize);
+  const y = Math.floor(event.offsetY / cellSize);
   if (!isIn(storage, [x, y])) {
     storage.push([x, y]);
     document.getElementById("clear").disabled = false;
@@ -228,7 +225,7 @@ canvasCells.onclick = function (event) {
 
 resetCanvasSize();
 drawGrid();
-document.getElementById("apply").onclick = applyNewSize;
+document.getElementById("apply").onclick = applyNewDimension;
 document.getElementById("start").onclick = runLife;
 document.getElementById("stop").onclick = stopLife;
 document.getElementById("clear").onclick = clearLife;
